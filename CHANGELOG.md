@@ -28,3 +28,20 @@
 - 新增 docs/程序骨架.md v1.0(施工图+填空手册):请求旅程总览、后端公共底座(统一响应/错误码/
   JWT 认证/Swagger)与样板模块(房间管理五件套)、RuleHandler/ScheduleStep 扩展点、前端主布局/
   路由守卫/axios 封装升级/样板页面、7 模块填空路线图、骨架验收清单。本轮仅文档,骨架代码待实施。
+- 实施步骤 2(分支 feat/step2-admin):认证 + 人员/房间/亚专科管理 + 规则中心。
+  后端:公共底座(ApiResponse/错误码/全局异常/ThreadLocal 认证上下文/JWT 拦截器)、
+  Swagger(springdoc)、三个业务模块与 Excel 导入(工号 upsert、带教关系转换、同名提示)、
+  规则中心(双形态实体/发布版本化/RuleRegistry+MANUAL_REMINDER 示例 Handler);
+  schema v0.2:staff 按实况修订、rule_definition/rule_version 两表、schedule_config 移除、
+  admin 种子与 25 条规则种子。前端:MainLayout 角色菜单/路由守卫/axios 拦截/auth store、
+  房间(样板 CRUD)、亚专科、人员(含导入弹窗)、规则中心(编辑+JSON 校验+回读预览+发布+版本)。
+  验证:后端单测 7/7 绿(含 8 月表 418 行实测解析与职称分布核对),前端 type-check/build 通过;
+  运行时 E2E 待 MySQL 环境(scripts/dev-run.md)。
+
+### Fixed(本地部署 E2E 实测发现)
+- schema.sql:`year_month` 为 MySQL 保留字导致建表失败 → 更名 `roster_month`。
+- application.yml:重复的顶层 `spring:` 键(DuplicateKeyException)→ 合并为单一块。
+- JDBC URL:`characterEncoding=utf8mb4` 非法(Java 字符集名)→ 改 `UTF-8`(dev/prod)。
+- RoomService.areas():`GROUP BY area` 配 `ORDER BY sort` 触发 ONLY_FULL_GROUP_BY → 改按 area 排序。
+- E2E 结果(绿色版 MySQL + 浏览器实测):登录/角色菜单/房间89间分页筛选/人员418人搜索
+  (陆珠凤"只在肝科"正确显示)/8月表API导入418人+自动建6个亚专科/规则25条+中文回读预览 全部通过。
