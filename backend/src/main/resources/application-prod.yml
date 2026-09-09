@@ -1,0 +1,14 @@
+# 生产环境(docker-compose):全部取自环境变量,见 deploy/.env.example
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:db}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:anes_schedule}?useUnicode=true&characterEncoding=utf8mb4&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:?请在环境变量中设置 MYSQL_PASSWORD}
+
+jwt:
+  secret: ${JWT_SECRET:?请在环境变量中设置 JWT_SECRET}
+
+logging:
+  level:
+    com.anes.schedule: info

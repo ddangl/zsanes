@@ -1,0 +1,15 @@
+# 统一换行:仓库内文本一律 LF,Windows 下检出也保持 LF(编辑器均支持)
+* text=auto eol=lf
+
+# Windows 批处理必须 CRLF
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# 二进制文件
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.jar binary
+*.zip binary
+*.xlsx binary

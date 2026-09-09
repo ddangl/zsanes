@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: anes-schedule-backend
+  profiles:
+    active: dev   # 生产环境通过环境变量 SPRING_PROFILES_ACTIVE=prod 覆盖
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api   # 所有接口统一前缀 /api,前端开发代理与 nginx 反代均按此配置
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+
+jwt:
+  # 开发默认密钥;生产环境用环境变量 JWT_SECRET 覆盖(见 application-prod.yml)
+  secret: dev-only-secret-key-change-me-in-production-0123456789
+  expire-hours: 12
+
+logging:
+  level:
+    com.anes.schedule: debug

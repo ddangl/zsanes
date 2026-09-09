@@ -1,0 +1,50 @@
+# 院内网一键部署:MySQL + 后端 + 前端(nginx)
+# 用法:cp .env.example .env && 修改密码 && docker compose up -d --build
+# 首次启动 MySQL 会自动执行 schema.sql 建库建表并写入初始排班参数
+services:
+  db:
+    image: mysql:8.0
+    container_name: anes-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?请在 .env 中设置 MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: anes_schedule
+      TZ: Asia/Shanghai
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
+    volumes:
+      - anes-mysql-data:/var/lib/mysql
+      - ../backend/src/main/resources/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ../backend
+    container_name: anes-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      MYSQL_HOST: db
+      MYSQL_PORT: "3306"
+      MYSQL_DATABASE: anes_schedule
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET:?请在 .env 中设置 JWT_SECRET}
+      TZ: Asia/Shanghai
+
+  frontend:
+    build: ../frontend
+    container_name: anes-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"   # 科室内网访问入口,如 80 被占用改为 "8000:80"
+
+volumes:
+  anes-mysql-data:
