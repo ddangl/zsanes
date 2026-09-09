@@ -91,14 +91,14 @@ CREATE TABLE IF NOT EXISTS room (
 -- 5. 月度值班备班表(总值班每月上传一次)
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS monthly_roster (
-  id         BIGINT      NOT NULL AUTO_INCREMENT,
-  year_month CHAR(7)     NOT NULL COMMENT '月份,如 2026-09',
-  status     VARCHAR(20) NOT NULL DEFAULT 'DRAFT' COMMENT 'DRAFT/ACTIVE',
-  created_by BIGINT      NULL,
-  created_at DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  id           BIGINT      NOT NULL AUTO_INCREMENT,
+  roster_month CHAR(7)     NOT NULL COMMENT '月份,如 2026-09(原列名 year_month 为 MySQL 保留字,已改名)',
+  status       VARCHAR(20) NOT NULL DEFAULT 'DRAFT' COMMENT 'DRAFT/ACTIVE',
+  created_by   BIGINT      NULL,
+  created_at   DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at   DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
-  UNIQUE KEY uk_year_month (year_month)
+  UNIQUE KEY uk_roster_month (roster_month)
 ) ENGINE = InnoDB COMMENT = '月度值班备班表';
 
 -- 6. 月度表明细

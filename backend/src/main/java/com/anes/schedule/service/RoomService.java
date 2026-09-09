@@ -34,11 +34,11 @@ public class RoomService {
         return PageResult.of(page.getTotal(), list);
     }
 
-    /** 区域去重列表(供筛选下拉) */
+    /** 区域去重列表(供筛选下拉;GROUP BY 与 ORDER BY 必须同列,满足 ONLY_FULL_GROUP_BY) */
     public List<String> areas() {
         return roomMapper.selectObjs(new LambdaQueryWrapper<Room>()
-                        .select(Room::getArea).isNotNull(Room::getArea).groupBy(Room::getArea)
-                        .orderByAsc(Room::getSort))
+                        .select(Room::getArea).isNotNull(Room::getArea)
+                        .groupBy(Room::getArea).orderByAsc(Room::getArea))
                 .stream().map(String::valueOf).toList();
     }
 

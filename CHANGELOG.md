@@ -37,3 +37,11 @@
   房间(样板 CRUD)、亚专科、人员(含导入弹窗)、规则中心(编辑+JSON 校验+回读预览+发布+版本)。
   验证:后端单测 7/7 绿(含 8 月表 418 行实测解析与职称分布核对),前端 type-check/build 通过;
   运行时 E2E 待 MySQL 环境(scripts/dev-run.md)。
+
+### Fixed(本地部署 E2E 实测发现)
+- schema.sql:`year_month` 为 MySQL 保留字导致建表失败 → 更名 `roster_month`。
+- application.yml:重复的顶层 `spring:` 键(DuplicateKeyException)→ 合并为单一块。
+- JDBC URL:`characterEncoding=utf8mb4` 非法(Java 字符集名)→ 改 `UTF-8`(dev/prod)。
+- RoomService.areas():`GROUP BY area` 配 `ORDER BY sort` 触发 ONLY_FULL_GROUP_BY → 改按 area 排序。
+- E2E 结果(绿色版 MySQL + 浏览器实测):登录/角色菜单/房间89间分页筛选/人员418人搜索
+  (陆珠凤"只在肝科"正确显示)/8月表API导入418人+自动建6个亚专科/规则25条+中文回读预览 全部通过。

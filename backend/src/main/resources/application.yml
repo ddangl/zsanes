@@ -6,17 +6,15 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: Asia/Shanghai
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 server:
   port: 8080
   servlet:
     context-path: /api   # 所有接口统一前缀 /api,前端开发代理与 nginx 反代均按此配置
-
-spring:
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
 
 springdoc:
   swagger-ui:
