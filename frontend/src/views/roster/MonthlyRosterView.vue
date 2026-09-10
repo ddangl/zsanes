@@ -16,9 +16,10 @@
             选择文件并解析
           </el-button>
           <span v-if="fileName" class="file">{{ fileName }}</span>
-          <el-button v-if="parsed" link type="danger" class="re-parse" @click="resetPreview">
-            清除预览
+          <el-button type="warning" :loading="loadingMonth" class="re-parse" @click="loadMonth">
+            查看当月已入库
           </el-button>
+          <el-button v-if="parsed" link type="danger" @click="resetPreview">清除预览</el-button>
         </el-form-item>
       </el-form>
 
@@ -93,9 +94,6 @@
         </el-table>
 
         <div class="actions">
-          <el-button type="warning" :loading="loadingMonth" @click="loadMonth">
-            查看当月已入库
-          </el-button>
           <el-tooltip
             :disabled="remainingBlocks === 0"
             content="存在阻断项:同名需选择、未匹配/岗位无法识别需回 Excel 修改后重传"
