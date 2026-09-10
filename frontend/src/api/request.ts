@@ -27,7 +27,10 @@ request.interceptors.response.use(
     }
     const msg = body.message || '请求失败'
     ElMessage.error(msg)
-    return Promise.reject(new Error(msg))
+    // 把响应体附到错误对象上(如月表导入 400 携带问题清单)
+    const err = new Error(msg) as Error & { body?: unknown }
+    err.body = body
+    return Promise.reject(err)
   },
   (error) => {
     if (error.response?.status === 401) {
