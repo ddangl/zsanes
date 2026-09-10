@@ -105,7 +105,7 @@ docker compose up -d --build    # 前端 80 端口,/api 反代到后端 8080
 
 - [x] 步骤 1:脚手架 + 目录结构 + schema
 - [x] 步骤 2:认证 + 人员/房间/亚专科管理 + 规则中心(代码完成,单测与前后端构建全绿;登录与 CRUD 的运行时验证待 MySQL 环境,见 [scripts/dev-run.md](scripts/dev-run.md))
-- [ ] 步骤 3:月度值班表 Excel 导入
+- [x] 步骤 3:月度值班表 Excel 导入(openspec add-monthly-roster-import + TDD,42 单测 + E2E 13/13;真实样本校准待办 tasks 6.2)
 - [ ] 步骤 4:排班引擎 + 单元测试
 - [ ] 步骤 5:生成/调整/确认 + 排班工作台
 - [ ] 步骤 6:周/月总览 + Excel 导出
